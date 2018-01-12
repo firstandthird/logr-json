@@ -7,7 +7,7 @@ exports.defaults = {
   additional: {}
 }
 
-exports.reporter = function(options, tags, message) {
+exports.log = function(options, tags, message) {
   if (options.tagsObject) {
     const tagsObj = {};
     tags.forEach((tag) => {
