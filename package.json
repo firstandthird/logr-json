@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/firstandthird/logr-json/issues"
   },
-  "homepage": "https://github.com/firstandthird/logr-json#readme"
+  "homepage": "https://github.com/firstandthird/logr-json#readme",
+  "dependencies": {
+    "fast-safe-stringify": "^2.0.6"
+  }
 }
