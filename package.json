@@ -1,6 +1,6 @@
 {
   "name": "logr-json",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "JSON reporter for Logr",
   "main": "index.js",
   "scripts": {
