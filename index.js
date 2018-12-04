@@ -1,5 +1,5 @@
 'use strict';
-const stringify = require('json-stringify-safe');
+const stringify = require('fast-safe-stringify');
 const _ = require('lodash');
 
 exports.defaults = {
