@@ -1,6 +1,6 @@
 'use strict';
 const stringify = require('fast-safe-stringify');
-const _ = require('lodash');
+const aug = require('aug');
 
 exports.defaults = {
   tagsObject: false,
@@ -20,6 +20,6 @@ exports.log = function(options, tags, message) {
     tags,
     message
   };
-  out = _.mergeWith(out, options.additional);
+  out = aug(out, options.additional);
   return stringify(out);
 };
