@@ -1,66 +1,44 @@
-//WIP
-  describe('json', () => {
-    it('should output to json formatted', () => {
-      const log = new Logr({ logger, type: 'json' });
-      log(['tag1', 'tag2'], 'message');
-      expect(typeof lastMessage).to.equal('string');
-      const jsonMessage = JSON.parse(lastMessage);
-      expect(jsonMessage.tags).to.deep.equal(['tag1', 'tag2']);
-      expect(jsonMessage.message).to.equal('message');
-      expect(jsonMessage.timestamp).to.exist;
-    });
-    it('should output tags as objects if config set', () => {
-      const log = new Logr({
-        logger,
-        type: 'json',
-        renderOptions: {
-          json: {
-            tagsObject: true
-          }
-        }
-      });
-      log(['tag1', 'tag2'], 'message');
-      expect(typeof lastMessage).to.equal('string');
-      const jsonMessage = JSON.parse(lastMessage);
-      expect(jsonMessage.tags).to.deep.equal({ tag1: true, tag2: true });
-      expect(jsonMessage.message).to.equal('message');
-      expect(jsonMessage.timestamp).to.exist;
-    });
-    it('should be able to accept an error instance', () => {
-      const log = new Logr({ logger, type: 'json' });
-      log(new Error('my error'));
-      const jsonObject = JSON.parse(lastMessage);
-      expect(jsonObject.tags).to.include('error');
-      expect(jsonObject.message.message).to.include('my error');
-      expect(jsonObject.message.stack).to.include('Error: my error');
-      expect(jsonObject.message.stack).to.include('logr.test.js');
-    });
-    it('should allow additional data to be logged', () => {
-      const log = new Logr({
-        logger,
-        type: 'json',
-        renderOptions: {
-          json: {
-            additional: {
-              host: 'blah.com'
-            }
-          }
-        }
-      });
-      log(['tag1', 'tag2'], 'message');
-      expect(typeof lastMessage).to.equal('string');
-      const jsonMessage = JSON.parse(lastMessage);
-      expect(jsonMessage.tags).to.deep.equal(['tag1', 'tag2']);
-      expect(jsonMessage.message).to.equal('message');
-      expect(jsonMessage.host).to.equal('blah.com');
-      expect(jsonMessage.timestamp).to.exist;
-    });
-    it('should stringify json in a safe way', () => {
-      const circularObj = {};
-      circularObj.circularRef = circularObj;
-      circularObj.list = [circularObj, circularObj];
-      const log = new Logr({ logger, type: 'json' });
-      log(['tag1'], circularObj);
-    });
-  });
+const tap = require('tap');
+const logrJson = require('../index.js');
 
+tap.test('should output to json formatted', (t) => {
+  const lastMessage = logrJson.log({}, ['tag1', 'tag2'], 'message');
+  const jsonMessage = JSON.parse(lastMessage);
+  t.match(jsonMessage.tags, ['tag1', 'tag2']);
+  t.match(jsonMessage.message, 'message');
+  t.ok(jsonMessage.timestamp);
+  t.end();
+});
+
+tap.test('should output tags as objects if config set', (t) => {
+  const lastMessage = logrJson.log({ tagsObject: true }, ['tag1', 'tag2'], 'message');
+  t.match(typeof lastMessage, 'string');
+  const jsonMessage = JSON.parse(lastMessage);
+  t.match(jsonMessage.tags, { tag1: true, tag2: true });
+  t.match(jsonMessage.message, 'message');
+  t.ok(jsonMessage.timestamp);
+  t.end();
+});
+
+tap.test('should allow additional data to be logged', (t) => {
+  const lastMessage = logrJson.log({
+    additional: {
+      host: 'blah.com'
+    }
+  }, ['tag1', 'tag2'], 'message');
+  t.equal(typeof lastMessage, 'string');
+  const jsonMessage = JSON.parse(lastMessage);
+  t.match(jsonMessage.tags, ['tag1', 'tag2']);
+  t.equal(jsonMessage.message, 'message');
+  t.equal(jsonMessage.host, 'blah.com');
+  t.ok(jsonMessage.timestamp);
+  t.end();
+});
+
+tap.test('should stringify json in a safe way', (t) => {
+  const circularObj = {};
+  circularObj.circularRef = circularObj;
+  circularObj.list = [circularObj, circularObj];
+  logrJson.log(['tag1'], circularObj);
+  t.end();
+});
