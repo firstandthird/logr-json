@@ -4,6 +4,7 @@ const aug = require('aug');
 
 exports.defaults = {
   tagsObject: false,
+  timestamp: true,
   additional: {}
 }
 
@@ -16,10 +17,12 @@ exports.log = function(options, tags, message) {
     tags = tagsObj;
   }
   let out = {
-    timestamp: new Date(),
     tags,
     message
   };
+  if (options.timestamp !== false) {
+    out.timestamp = new Date();
+  }
   out = aug(out, options.additional);
   return stringify(out);
 };

@@ -10,6 +10,16 @@ tap.test('should output to json formatted', (t) => {
   t.end();
 });
 
+tap.test('should allow timestamps to be turned off', (t) => {
+  const lastMessage = logrJson.log({ timestamp: false }, ['tag1', 'tag2'], 'message');
+  const jsonMessage = JSON.parse(lastMessage);
+  t.match(jsonMessage.tags, ['tag1', 'tag2']);
+  t.match(jsonMessage.message, 'message');
+  console.log(jsonMessage);
+  t.equal(typeof jsonMessage.timestamp, 'undefined');
+  t.end();
+});
+
 tap.test('should output tags as objects if config set', (t) => {
   const lastMessage = logrJson.log({ tagsObject: true }, ['tag1', 'tag2'], 'message');
   t.match(typeof lastMessage, 'string');
