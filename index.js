@@ -24,15 +24,14 @@ exports.log = function(options, tags, message) {
    level = 'DEBUG';
   }
   if (options.tagsObject) {
-    const tagsObj = { level };
+    const tagsObj = {};
     tags.forEach((tag) => {
       tagsObj[tag] = true;
     });
     tags = tagsObj;
-  } else {
-    tags.push(`level=${level}`);
   }
   let out = {
+    level,
     tags,
     message
   };
