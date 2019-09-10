@@ -49,6 +49,23 @@ tap.test('should stringify json in a safe way', (t) => {
   const circularObj = {};
   circularObj.circularRef = circularObj;
   circularObj.list = [circularObj, circularObj];
-  logrJson.log(['tag1'], circularObj);
+  logrJson.log({}, ['tag1'], circularObj);
+  t.end();
+});
+
+tap.test('logs appropriate levels', (t) => {
+  const info = logrJson.log({ tagsObject: true }, ['tag1', 'tag2'], 'message');
+  const infoMessage = JSON.parse(info);
+  const fatal = logrJson.log({ tagsObject: true }, ['tag1', 'tag2', 'fatal'], 'message');
+  const fatalMessage = JSON.parse(fatal);
+  const error = logrJson.log({ tagsObject: true }, ['tag1', 'tag2', 'error'], 'message');
+  const errorMessage = JSON.parse(error);
+  const debug = logrJson.log({ tagsObject: true }, ['tag1', 'tag2', 'debug'], 'message');
+  const debugMessage = JSON.parse(debug);
+
+  t.equal(fatalMessage.level, 'FATAL');
+  t.equal(infoMessage.level, 'INFO');
+  t.equal(errorMessage.level, 'ERROR');
+  t.equal(debugMessage.level, 'DEBUG');
   t.end();
 });
