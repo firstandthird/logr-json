@@ -9,12 +9,25 @@ exports.defaults = {
 }
 
 exports.log = function(options, tags, message) {
+  // determine level of severity:
+  let level = 'INFO';
+  if (tags.includes('fatal')) {
+   level = 'FATAL';
+  } else if (tags.includes('error')) {
+   level = 'ERROR';
+  } else if (tags.includes('warning')) {
+   level = 'WARN';
+  } else if (tags.includes('debug')) {
+   level = 'DEBUG';
+  }
   if (options.tagsObject) {
-    const tagsObj = {};
+    const tagsObj = { level };
     tags.forEach((tag) => {
       tagsObj[tag] = true;
     });
     tags = tagsObj;
+  } else {
+    tags.push(`level=${level}`);
   }
   let out = {
     tags,
