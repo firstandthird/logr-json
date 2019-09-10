@@ -11,9 +11,6 @@ exports.defaults = {
 exports.log = function(options, tags, message) {
   // determine level of severity:
   let level = 'INFO';
-  if (Array.isArray(options)) {
-    tags = options;
-  }
   if (tags.includes('fatal')) {
    level = 'FATAL';
   } else if (tags.includes('error')) {

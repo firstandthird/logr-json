@@ -49,7 +49,7 @@ tap.test('should stringify json in a safe way', (t) => {
   const circularObj = {};
   circularObj.circularRef = circularObj;
   circularObj.list = [circularObj, circularObj];
-  logrJson.log(['tag1'], circularObj);
+  logrJson.log({}, ['tag1'], circularObj);
   t.end();
 });
 
