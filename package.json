@@ -4,7 +4,8 @@
   "description": "JSON reporter for Logr",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/test.js"
+    "test": "tap",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,9 @@
     "fast-safe-stringify": "^2.0.6"
   },
   "devDependencies": {
-    "tap": "^14.2.2"
+    "tap": "^14.10.6",
+    "eslint": "^7.13.0",
+    "eslint-config-firstandthird": "^6.0.2",
+    "eslint-plugin-import": "^2.20.1"
   }
 }
