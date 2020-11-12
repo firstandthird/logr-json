@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 const tap = require('tap');
-const logrJson = require('../index.js');
+const logrJson = require('..');
 
 tap.test('should output to json formatted', (t) => {
   const lastMessage = logrJson.log({}, ['tag1', 'tag2'], 'message');
